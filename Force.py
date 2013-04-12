@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-
+DIST_CUTOFF = 2 ** (1/6.)
 class Force(object):
 
     def __init__(self, c, NL):
@@ -64,6 +64,17 @@ class Force(object):
         pz = np.triu(pz)
         pt = px + py + pz
         return 1 / (d * N * self.ke()) * np.sum(pt)
+    def lj_force(self, mag, d, hat):
+        eps = 1.0
+        sig = 1.0
+        a = ((24 * eps) / mag * (2 * (sig / mag) ** 12 - (sig / mag) ** 6)) * hat
+        a = np.nan_to_num(a)
+        a = -a
+        a[self.dr > DIST_CUTOFF] = 0.
+        return np.sum(a, axis=1)
+
+    def damp_force(self, v, r, gamma=1000):
+        pass
 
     def ax(self):
         if self.NL:
@@ -82,13 +93,14 @@ class Force(object):
                     x_hat = dx / mag
                     #dr = self.c.r_dist(x[0], neighbor)
                     #ax_temp +- mag * dx / dr
-                    ax_temp += ((24 * eps) / mag * (2 * (sig / mag) ** 12 - (sig / mag) ** 6)) * x_hat 
+                    ax_temp += ((24 * eps) / mag * (2 * (sig / mag) ** 12 - (sig / mag) ** 6)) * x_hat
                 ax.append(ax_temp)
-            
+
             ax_array = np.array(ax)
             return -ax_array
 
         else:
+            # TODO: apply force only to particles if touching
             eps = 1.0
             sig = 1.0
             dx = self.c.dx()
@@ -107,20 +119,24 @@ class Force(object):
             #print "x_hat"
             #print x_hat
 
-            ax = ((24 * eps) / r_mag * (2 * (sig / r_mag) ** 12 - (sig / r_mag) ** 6)) * x_hat
-            ax = np.nan_to_num(ax)
-            ax = -ax
+            #ax = ((24 * eps) / r_mag * (2 * (sig / r_mag) ** 12 - (sig / r_mag) ** 6)) * x_hat
+            #ax = np.nan_to_num(ax)
+            #ax = -ax
             #force = r_hat * (24*eps)/r_mag * (2*(sig/r_mag)**12 - (sig/r_mag)**6)
             #print "ax: "
             #print np.sum(ax, axis=1)
-            return np.sum(ax, axis=1)
+            #return np.sum(ax, axis=1)
+            ax = self.lj_force(r_mag, x_hat)
+            ax += self.damp_force(self.c.dv_x(), dx)
+
+            return ax
 
     def ay(self):
         if self.NL:
             ay = []
             eps = 1.0
             sig = 1.0
-            
+
             for y in list(enumerate(self.c.y)):
                 ay_temp = 0.0
                 neighbors = self.c.neighbor(y[0])
@@ -154,14 +170,18 @@ class Force(object):
 
             #print "y_hat"
             #print y_hat
-            ay = y_hat * ((24 * eps) / r_mag * (2 * (sig / r_mag) ** 12 - (sig / r_mag) ** 6))
-            ay = np.nan_to_num(ay)
+            #ay = y_hat * ((24 * eps) / r_mag * (2 * (sig / r_mag) ** 12 - (sig / r_mag) ** 6))
+            #ay = np.nan_to_num(ay)
 
-            ay = -ay
+            #ay = -ay
             #force = r_hat * (24*eps)/r_mag * (2*(sig/r_mag)**12 - (sig/r_mag)**6)
             #print "ay: "
             #print np.sum(ay, axis=1)
-            return np.sum(ay, axis=1)
+            #return np.sum(ay, axis=1)
+            ay = self.lj_force(r_mag, y_hat)
+            ay += self.damp(self.c.dv_y(), dy)
+            ay += self.gravity()
+            return ay
 
     def az(self):
         eps = 1.0

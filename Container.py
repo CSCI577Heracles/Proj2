@@ -101,11 +101,22 @@ class Container(object):
         dx[dx > self.Lx / 2.] -= self.Lx
         dx[dx < -self.Lx / 2.] += self.Lx
 
-        dx[dx > self.DIST_CUTOFF] = 0.
+       # dx[dx > self.DIST_CUTOFF] = 0.
 
         #print "dx"
         #print dx
         return dx
+
+    def dv_x(self):
+        xtemp = np.tile(self.vx, (self.x.size, 1))
+        dvx = xtemp - xtemp.T
+
+        return dvx
+
+    def dv_y(self):
+        ytemp = np.tile(self.vy, (self.y.size, 1))
+        dvy = ytemp - ytemp.T
+        return dvy
 
     def dy(self):
         ytemp = np.tile(self.y, (self.y.size, 1))
