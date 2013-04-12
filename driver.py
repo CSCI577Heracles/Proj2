@@ -6,7 +6,7 @@ import ContainerInitializer
 import numpy as np
 import matplotlib.pyplot as plt
 
-NUM_TIMESTEPS = 4000
+NUM_TIMESTEPS = 1#4000
 FRAME_RATE = 20
 DELTA_T = 0.01
 SQUEEZE = False
@@ -41,7 +41,7 @@ def circle( xy, radius, color="lightsteelblue", facecolor="green", alpha=.6, ax=
     e.set_facecolor( facecolor )
     e.set_alpha( alpha )
 
-c = ContainerInitializer.ContainerInitializer("eight").getContainer()
+c = ContainerInitializer.ContainerInitializer("hourglass").getContainer()
 c.init_nl()
 c.update_nl(NL_DIST)
 
@@ -77,9 +77,9 @@ while count < NUM_TIMESTEPS:
     print "--------------------------------------"
     print "Timestep: " + str(count*DELTA_T)
     print "aX:"
-    print c.ax
+    #print c.ax
     print "aY:"
-    print c.ay
+    #print c.ay
     pe_list.append(f.pe())
     ke_list.append(f.ke())
 

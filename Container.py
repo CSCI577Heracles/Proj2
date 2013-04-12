@@ -29,13 +29,13 @@ class Container(object):
 
     def update_nl(self, dist):
         self.G.remove_edges_from(self.G.edges())
-        print "dr:"
-        print self.dr()
+        #print "dr:"
+        #print self.dr()
         for row in list(enumerate(self.dr())):
             for col in list(enumerate(row[1])):
                 if col[1] > dist:
                     self.G.add_edge(col[0], row[0], x=self.x[col[0]]-self.x[row[0]], y=self.y[col[0]]-self.y[row[0]], z=0., r=col[1])
-        print nx.adjacency_matrix(self.G)
+        #print nx.adjacency_matrix(self.G)
 
     def neighbor(self, p):
         return self.G.neighbors(p)
@@ -79,8 +79,8 @@ class Container(object):
 
     def add_particle(self, x, y, z, vx, vy, vz):
         self.x = np.hstack((self.x, x))
-        print "x: "
-        print self.x
+        #print "x: "
+        #print self.x
         self.y = np.hstack((self.y, y))
         self.z = np.hstack((self.z, z))
 
