@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 NUM_TIMESTEPS = 1#4000
-FRAME_RATE = 20
+FRAME_RATE = 1
 DELTA_T = 0.01
 SQUEEZE = False
 SQUEEZE_FACTOR = 0.997
@@ -42,11 +42,11 @@ def circle( xy, radius, color="lightsteelblue", facecolor="green", alpha=.6, ax=
     e.set_alpha( alpha )
 
 c = ContainerInitializer.ContainerInitializer("hourglass").getContainer()
-c.init_nl()
-c.update_nl(NL_DIST)
+#c.init_nl()
+#c.update_nl(NL_DIST)
 
-f = Force.Force(c, NL)
-i = Integrator.Integrator(DELTA_T, f)
+#f = Force.Force(c, NL)
+#i = Integrator.Integrator(DELTA_T, f)
 
 state_list = []
 count = 0
@@ -70,18 +70,18 @@ while count < NUM_TIMESTEPS:
         c.y *= SQUEEZE_FACTOR
 
     #if count % NL_UPDATE_RATE == 0:
-    if True:
-        c.update_nl(NL_DIST)
+    #if True:
+        #c.update_nl(NL_DIST)
 
-    i.integrate()
-    print "--------------------------------------"
+    # i.integrate()
+    # pressure_listint "--------------------------------------"
     print "Timestep: " + str(count*DELTA_T)
     print "aX:"
     #print c.ax
     print "aY:"
     #print c.ay
-    pe_list.append(f.pe())
-    ke_list.append(f.ke())
+    #pe_list.append(f.pe())
+    #ke_list.append(f.ke())
 
     #print "AX TIMESTEP " + str(count)
     #print c.ax
