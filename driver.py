@@ -6,7 +6,7 @@ import ContainerInitializer
 import numpy as np
 import matplotlib.pyplot as plt
 
-NUM_TIMESTEPS = 1#4000
+NUM_TIMESTEPS = 1000
 FRAME_RATE = 1
 DELTA_T = 0.01
 SQUEEZE = False
@@ -41,12 +41,12 @@ def circle( xy, radius, color="lightsteelblue", facecolor="green", alpha=.6, ax=
     e.set_facecolor( facecolor )
     e.set_alpha( alpha )
 
-c = ContainerInitializer.ContainerInitializer("hourglass").getContainer()
+c = ContainerInitializer.ContainerInitializer("hourglass_2").getContainer()
 #c.init_nl()
 #c.update_nl(NL_DIST)
 
-#f = Force.Force(c, NL)
-#i = Integrator.Integrator(DELTA_T, f)
+f = Force.Force(c, NL)
+i = Integrator.Integrator(DELTA_T, f)
 
 state_list = []
 count = 0
@@ -54,8 +54,8 @@ count = 0
 plt.figure(1)
 plt.clf()
 plt.ion()
-plt.xlim((0, 10))
-plt.ylim((0, 10))
+plt.xlim((0, 100))
+plt.ylim((0, 100))
 plt.grid()
 ax = plt.gca()
 plt.show()
@@ -63,17 +63,7 @@ plt.show()
 while count < NUM_TIMESTEPS:
     #print "--------- BEGIN TIMESTEP " + str(count) + " --------------"
 
-    if count > 3. and c.Lx > 8. * 2. ** (1/6.) and SQUEEZE:
-        c.Lx *= SQUEEZE_FACTOR
-        c.Ly *= SQUEEZE_FACTOR
-        c.x *= SQUEEZE_FACTOR
-        c.y *= SQUEEZE_FACTOR
-
-    #if count % NL_UPDATE_RATE == 0:
-    #if True:
-        #c.update_nl(NL_DIST)
-
-    # i.integrate()
+    i.integrate()
     # pressure_listint "--------------------------------------"
     print "Timestep: " + str(count*DELTA_T)
     print "aX:"
@@ -111,20 +101,20 @@ while count < NUM_TIMESTEPS:
 
     count += 1
 
-time = np.linspace(0, NUM_TIMESTEPS*DELTA_T, NUM_TIMESTEPS)
+#time = np.linspace(0, NUM_TIMESTEPS*DELTA_T, NUM_TIMESTEPS)
 
-plt.clf()
-plt.plot(time, pe_list)
-plt.ylabel('Potential Energy Per Particle')
-plt.title('PE - Two Initial Condition')
-plt.xlabel('Time Units')
+#plt.clf()
+#plt.plot(time, pe_list)
+#plt.ylabel('Potential Energy Per Particle')
+#plt.title('PE - Two Initial Condition')
+#plt.xlabel('Time Units')
 #plt.savefig('eight_pe_nnl.png')
-plt.show(block=True)
+#plt.show(block=True)
 
-plt.clf()
-plt.plot(time, pe_list)
-plt.ylabel('Kinetic Energy')
-plt.title('Kinetic Energy Per Particle For Shrinking Box')
-plt.xlabel('Time Units')
+#plt.clf()
+#plt.plot(time, pe_list)
+#plt.ylabel('Kinetic Energy')
+#plt.title('Kinetic Energy Per Particle For Shrinking Box')
+#plt.xlabel('Time Units')
 #plt.savefig('prob2_pe.png')
-plt.show(block=True)
+#plt.show(block=True)

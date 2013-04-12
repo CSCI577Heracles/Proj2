@@ -64,17 +64,21 @@ class Force(object):
         pz = np.triu(pz)
         pt = px + py + pz
         return 1 / (d * N * self.ke()) * np.sum(pt)
-    def lj_force(self, mag, d, hat):
+
+    def lj_force(self, mag, hat):
         eps = 1.0
         sig = 1.0
         a = ((24 * eps) / mag * (2 * (sig / mag) ** 12 - (sig / mag) ** 6)) * hat
         a = np.nan_to_num(a)
         a = -a
-        a[self.dr > DIST_CUTOFF] = 0.
+        a[self.c.dr() > DIST_CUTOFF] = 0.
         return np.sum(a, axis=1)
 
     def damp_force(self, v, r, gamma=1000):
-        pass
+        return -0.005
+
+    def gravity(self):
+        return np.ones(np.size(self.c.x)) * -3.0
 
     def ax(self):
         if self.NL:
@@ -129,6 +133,7 @@ class Force(object):
             ax = self.lj_force(r_mag, x_hat)
             ax += self.damp_force(self.c.dv_x(), dx)
 
+            ax[:self.c.NUM_SIDE*2] = 0.
             return ax
 
     def ay(self):
@@ -179,8 +184,10 @@ class Force(object):
             #print np.sum(ay, axis=1)
             #return np.sum(ay, axis=1)
             ay = self.lj_force(r_mag, y_hat)
-            ay += self.damp(self.c.dv_y(), dy)
+            ay += self.damp_force(self.c.dv_y(), dy)
             ay += self.gravity()
+
+            ay[:self.c.NUM_SIDE*2] = 0.
             return ay
 
     def az(self):

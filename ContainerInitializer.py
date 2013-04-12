@@ -134,6 +134,35 @@ class ContainerInitializer(object):
                         #c.addParticle(xs[j],y[i],0,0,0,0,1)
                         c.add_particle(xs[j], y[i], 0., 0., 0., 0.)
 
+        elif init_string == 'hourglass_2':
+            d = 2. ** (1/6.)
+            c.Lx = 100
+            c.Ly = 100
+
+            NUM_SIDE = 50
+            NUM_PARTICLES = 10
+
+            left_x = np.linspace(5., 45., NUM_SIDE)
+            left_y = np.linspace(95., 50., NUM_SIDE)
+
+            right_x = np.linspace(95., 55., NUM_SIDE)
+            right_y = np.linspace(95., 50., NUM_SIDE)
+
+            for i in range(NUM_SIDE):
+                c.add_particle(left_x[i], left_y[i], 0., 0., 0., 0.)
+                c.add_particle(right_x[i], right_y[i], 0., 0., 0., 0.)
+
+            part_x = np.linspace(10., 90., NUM_PARTICLES)
+            part_y = np.ones((NUM_PARTICLES)) * 95
+            print part_y
+            for j in range(NUM_PARTICLES):
+                print j
+                c.add_particle(part_x[j], part_y[j], 0., 0., 0., 0.)
+
+            c.NUM_SIDE = NUM_SIDE
+
+
+
         elif init_string == 'hourglass':
             d = 2.**(1/6.)              # diameter of particles
             r = d/2.                    # radius of particles
@@ -147,16 +176,16 @@ class ContainerInitializer(object):
             c.Ly = 2.*(hf - hh) + nt*d  # height based on the angle theta (which specifies h's)
             hc = hf - hh                # height of the center of the hourglass
 
-            yTop = np.arange(c.Ly - nt*d + r, c.Ly, r);
+            yTop = np.arange(c.Ly - nt*d + r, c.Ly, r)
 
             # TODO: something's going wrong here right now, different output array sizes
             #xLDiag = np.arange(r, (wf - wh)/2., r*np.sin(theta))
             #xRDiag = np.arange((wf + wh)/2., c.Lx - r, r*np.sin(theta))
             #yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, r*np.cos(theta))
 
-            xLDiag = np.linspace(r, (wf - wh)/2.)
-            xRDiag = np.linspace((wf + wh) / 2., c.Lx -r)
-            yDiag = np.linspace((c.Ly - nt * d) / 2., c.Ly - nt * d)
+            xLDiag = np.linspace(r, (wf - wh)/2., 10)
+            xRDiag = np.linspace((wf + wh) / 2., c.Lx -r, 10)
+            yDiag = np.linspace((c.Ly - nt * d) / 2., c.Ly - nt * d, 10)
             print np.size(xLDiag)
             print np.size(xRDiag)
             print np.size(yDiag)
