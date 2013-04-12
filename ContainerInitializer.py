@@ -133,6 +133,42 @@ class ContainerInitializer(object):
                     else:
                         #c.addParticle(xs[j],y[i],0,0,0,0,1)
                         c.add_particle(xs[j], y[i], 0., 0., 0., 0.)
+                        
+        elif init_string == 'hourglass':
+            d = 2.**(1/6.)              # diameter of particles
+            r = d/2.                    # radius of particles
+            c.Lx = 25.*d
+            nt = 10                     # number of particles defining the height of the hopper
+            theta = np.pi/4.            # angle between vertical and hourglass wall
+            wf = c.Lx                   # width at the top of the funnel
+            wh = 5.*d                   # width of the hole at the bottom of the funnel
+            hf = wf*np.tan(theta)/2.    # height of the triangle defined by wf and theta
+            hh = wh*np.tan(theta)/2.    # height of the triangle defined by wh and theta
+            c.Ly = 2.*(hf - hh) + nt*d  # height based on the angle theta (which specifies h's)
+            hc = hf - hh                # height of the center of the hourglass
+            
+            yTop = np.arange(c.Ly - nt*d + r, c.Ly, r);
+            
+            # TODO: something's going wrong here right now, different output array sizes
+            xLDiag = np.arange(r, (wf - wh)/2., r*np.sin(theta))
+            xRDiag = np.arange((wf + wh)/2., c.Lx - r, r*np.sin(theta))
+            yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, r*np.cos(theta))
+            
+            print np.size(xLDiag)
+            print np.size(xRDiag)
+            print np.size(yDiag)
+            
+            N = np.size(yDiag)
+            
+            for i in range(np.size(yTop)):
+                c.add_particle(r, yTop[i], 0, 0, 0, 0)
+                c.add_particle(c.Lx - r, yTop[i], 0, 0, 0, 0)
+                
+            for i in range(N):
+                for j in range(N):
+                    c.add_particle(xLDiag[i], yDiag[-j], 0, 0, 0, 0)
+                    c.add_particle(xRDiag[i], yDiag[j], 0, 0, 0, 0)
+        
         self.c = c
 
 
