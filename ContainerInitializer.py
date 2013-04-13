@@ -181,11 +181,12 @@ class ContainerInitializer(object):
             c.Ly = 2.*(hf - hh) + nt*d  # height based on the angle theta (which specifies h's)
             hc = hf - hh                # height of the center of the hourglass
 
+            NUM_PARTICLES = 3
             yTop = np.arange(c.Ly - nt*d + r, c.Ly, r)
             
-            xLDiag = np.arange(0, (wf - wh)/2., r*np.sin(theta))
-			xRDiag = np.arange((wf + wh)/2., Lx, r*np.sin(theta))
-			yDiag = np.arange((Ly - nt*d)/2., Ly - nt*d, r*np.cos(theta))
+            xLDiag = np.arange(0, (wf - wh)/2., (d+0.5)*np.sin(theta))
+            xRDiag = np.arange((wf + wh)/2., c.Lx, (d+0.5)*np.sin(theta))
+            yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, (d+0.5)*np.cos(theta))
             print np.size(xLDiag)
             print np.size(xRDiag)
             print np.size(yDiag)
@@ -196,10 +197,27 @@ class ContainerInitializer(object):
             #    c.add_particle(r, yTop[i], 0, 0, 0, 0)
             #    c.add_particle(c.Lx - r, yTop[i], 0, 0, 0, 0)
 
+            print "N: " + str(N)
             for i in range(N):
-                for j in range(N):
-                    c.add_particle(xLDiag[i], yDiag[-j], 0, 0, 0, 0)
-                    c.add_particle(xRDiag[i], yDiag[j], 0, 0, 0, 0)
+                c.add_particle(xLDiag[i], yDiag[-i - 1], 0, 0, 0, 0)
+                c.add_particle(xRDiag[i], yDiag[i], 0, 0, 0, 0)
+
+            part_x1 = np.linspace(10., 18., NUM_PARTICLES)
+            part_x2 = np.linspace(10., 18., NUM_PARTICLES)
+            part_x3 = np.linspace(10., 18., NUM_PARTICLES)
+            #part_x4 = np.linspace(10., 20., NUM_PARTICLES)
+
+            part_y = np.ones((NUM_PARTICLES)) * 25
+
+            print part_y
+            for j in range(NUM_PARTICLES):
+                print j
+                c.add_particle(part_x1[j], part_y[j], 0., 0., 0., 0.)
+                c.add_particle(part_x2[j], part_y[j]-5., 0., 0., 0., 0.)
+                c.add_particle(part_x3[j], part_y[j]-10, 0., 0., 0., 0.)
+                #c.add_particle(part_x4[j], part_y[j]-15, 0., 0., 0., 0.)
+
+            c.NUM_SIDE = N
 
         self.c = c
 

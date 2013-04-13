@@ -41,7 +41,7 @@ def circle( xy, radius, color="lightsteelblue", facecolor="green", alpha=.6, ax=
     e.set_facecolor( facecolor )
     e.set_alpha( alpha )
 
-c = ContainerInitializer.ContainerInitializer("hourglass_2").getContainer()
+c = ContainerInitializer.ContainerInitializer("hourglass").getContainer()
 #c.init_nl()
 #c.update_nl(NL_DIST)
 
@@ -54,8 +54,8 @@ count = 0
 plt.figure(1)
 plt.clf()
 plt.ion()
-plt.xlim((0, 100))
-plt.ylim((0, 100))
+plt.xlim((0, c.Lx))
+plt.ylim((0, c.Ly))
 plt.grid()
 ax = plt.gca()
 plt.show()
