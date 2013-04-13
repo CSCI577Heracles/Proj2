@@ -182,24 +182,19 @@ class ContainerInitializer(object):
             hc = hf - hh                # height of the center of the hourglass
 
             yTop = np.arange(c.Ly - nt*d + r, c.Ly, r)
-
-            # TODO: something's going wrong here right now, different output array sizes
-            #xLDiag = np.arange(r, (wf - wh)/2., r*np.sin(theta))
-            #xRDiag = np.arange((wf + wh)/2., c.Lx - r, r*np.sin(theta))
-            #yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, r*np.cos(theta))
-
-            xLDiag = np.linspace(r, (wf - wh)/2., 10)
-            xRDiag = np.linspace((wf + wh) / 2., c.Lx -r, 10)
-            yDiag = np.linspace((c.Ly - nt * d) / 2., c.Ly - nt * d, 10)
+            
+            xLDiag = np.arange(0, (wf - wh)/2., r*np.sin(theta))
+			xRDiag = np.arange((wf + wh)/2., Lx, r*np.sin(theta))
+			yDiag = np.arange((Ly - nt*d)/2., Ly - nt*d, r*np.cos(theta))
             print np.size(xLDiag)
             print np.size(xRDiag)
             print np.size(yDiag)
 
             N = np.size(yDiag)
 
-            for i in range(np.size(yTop)):
-                c.add_particle(r, yTop[i], 0, 0, 0, 0)
-                c.add_particle(c.Lx - r, yTop[i], 0, 0, 0, 0)
+            #for i in range(np.size(yTop)):
+            #    c.add_particle(r, yTop[i], 0, 0, 0, 0)
+            #    c.add_particle(c.Lx - r, yTop[i], 0, 0, 0, 0)
 
             for i in range(N):
                 for j in range(N):
