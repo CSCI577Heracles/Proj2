@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 NUM_TIMESTEPS = 1000
-FRAME_RATE = 1
+FRAME_RATE = 20
 DELTA_T = 0.01
 SQUEEZE = False
 SQUEEZE_FACTOR = 0.997

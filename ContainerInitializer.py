@@ -5,9 +5,8 @@ import math
 
 DIST_CUTOFF = 5.
 
+
 class ContainerInitializer(object):
-
-
     def __init__(self, init_string):
         c = Container.Container(DIST_CUTOFF=DIST_CUTOFF)
         Lx = 10.
@@ -161,8 +160,6 @@ class ContainerInitializer(object):
 
             c.NUM_SIDE = NUM_SIDE
 
-
-
         elif init_string == 'hourglass':
             d = 2.**(1/6.)              # diameter of particles
             r = d/2.                    # radius of particles
@@ -202,7 +199,6 @@ class ContainerInitializer(object):
                     c.add_particle(xRDiag[i], yDiag[j], 0, 0, 0, 0)
 
         self.c = c
-
 
     def getContainer(self):
         return self.c
