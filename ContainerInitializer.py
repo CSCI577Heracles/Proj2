@@ -138,8 +138,8 @@ class ContainerInitializer(object):
             c.Lx = 100
             c.Ly = 100
 
-            NUM_SIDE = 25
-            NUM_PARTICLES = 5
+            NUM_SIDE = 30
+            NUM_PARTICLES = 8
 
             left_x = np.linspace(5., 45., NUM_SIDE)
             left_y = np.linspace(95., 50., NUM_SIDE)
@@ -151,12 +151,12 @@ class ContainerInitializer(object):
                 c.add_particle(left_x[i], left_y[i], 0., 0., 0., 0.)
                 c.add_particle(right_x[i], right_y[i], 0., 0., 0., 0.)
 
-            part_x1 = np.linspace(10., 90., NUM_PARTICLES)
-            part_x2 = np.linspace(20., 80., NUM_PARTICLES)
-            part_x3 = np.linspace(30., 70., NUM_PARTICLES)
+            part_x1 = np.linspace(40., 60., NUM_PARTICLES)
+            part_x2 = np.linspace(40., 60., NUM_PARTICLES)
+            part_x3 = np.linspace(40., 60., NUM_PARTICLES)
             part_x4 = np.linspace(40., 60., NUM_PARTICLES)
 
-            part_y = np.ones((NUM_PARTICLES)) * 95
+            part_y = np.ones((NUM_PARTICLES)) * 75
 
             print part_y
             for j in range(NUM_PARTICLES):
