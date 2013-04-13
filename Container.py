@@ -101,8 +101,6 @@ class Container(object):
         dx[dx > self.Lx / 2.] -= self.Lx
         dx[dx < -self.Lx / 2.] += self.Lx
 
-       # dx[dx > self.DIST_CUTOFF] = 0.
-
         #print "dx"
         #print dx
         return dx
@@ -137,7 +135,7 @@ class Container(object):
         # TODO: fix this, no negative values in dr matrix
         #print "dr:"
         #print np.sqrt(self.dx ** 2 + self.dy ** 2 + self.dz **2)
-        return self.dx() ** 2 + self.dy() ** 2 + self.dz() ** 2
+        return np.sqrt(self.dx() ** 2 + self.dy() ** 2)
 
 
 

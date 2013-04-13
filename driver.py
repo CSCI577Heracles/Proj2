@@ -6,8 +6,8 @@ import ContainerInitializer
 import numpy as np
 import matplotlib.pyplot as plt
 
-NUM_TIMESTEPS = 1000
-FRAME_RATE = 20
+NUM_TIMESTEPS = 10000
+FRAME_RATE = 100
 DELTA_T = 0.01
 SQUEEZE = False
 SQUEEZE_FACTOR = 0.997
@@ -19,7 +19,7 @@ else:
     print "Neighborlist OFF"
 
 NL_UPDATE_RATE = 20
-NL_DIST = 2. * 2. ** (1./6.)
+NL_DIST = 2. ** (1./6.)
 
 
 

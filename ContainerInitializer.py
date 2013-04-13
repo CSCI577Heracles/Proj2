@@ -3,7 +3,7 @@ import Container
 from math import sqrt
 import math
 
-DIST_CUTOFF = 5.
+DIST_CUTOFF = 2 ** (1/6.)
 
 
 class ContainerInitializer(object):
@@ -138,8 +138,8 @@ class ContainerInitializer(object):
             c.Lx = 100
             c.Ly = 100
 
-            NUM_SIDE = 50
-            NUM_PARTICLES = 10
+            NUM_SIDE = 25
+            NUM_PARTICLES = 5
 
             left_x = np.linspace(5., 45., NUM_SIDE)
             left_y = np.linspace(95., 50., NUM_SIDE)
@@ -151,12 +151,16 @@ class ContainerInitializer(object):
                 c.add_particle(left_x[i], left_y[i], 0., 0., 0., 0.)
                 c.add_particle(right_x[i], right_y[i], 0., 0., 0., 0.)
 
-            part_x = np.linspace(10., 90., NUM_PARTICLES)
-            part_y = np.ones((NUM_PARTICLES)) * 95
+            part_x = np.linspace(30., 70., NUM_PARTICLES)
+            part_y = np.ones((NUM_PARTICLES)) * 85
+
             print part_y
             for j in range(NUM_PARTICLES):
                 print j
                 c.add_particle(part_x[j], part_y[j], 0., 0., 0., 0.)
+                c.add_particle(part_x[j]-5., part_y[j]-5., 0., 0., 0., 0.)
+                c.add_particle(part_x[j]+5., part_y[j]-10, 0., 0., 0., 0.)
+                c.add_particle(part_x[j], part_y[j]-15, 0., 0., 0., 0.)
 
             c.NUM_SIDE = NUM_SIDE
 
