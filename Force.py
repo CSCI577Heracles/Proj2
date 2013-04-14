@@ -19,12 +19,12 @@ class Force(object):
         a[self.c.dr() > DIST_CUTOFF] = 0.
         return np.sum(a, axis=1)
 
-    def damp_force(self, dvx, dvy, dx, dy, r_mag, gamma=5.):
+    def damp_force(self, dvx, dvy, dx, dy, r_mag, gamma=50.):
         #return -gamma * (np.dot(v, r)) * (r / r ** 2)
         return gamma * (dvx * dx + dvy * dy) / r_mag
 
     def gravity(self):
-        return np.ones(np.size(self.c.x)) * -3.0 * 0.01
+        return np.ones(np.size(self.c.x)) * -4.0 * 0.01
 
     def a(self):
         dx = self.c.dx()
@@ -85,14 +85,14 @@ class Force(object):
         ay += np.sum(np.nan_to_num(damp_force * y_hat), axis=1)
         ay += self.gravity()
 
-        ax[:self.c.NUM_SIDE * 2] = 0.
-        ay[:self.c.NUM_SIDE * 2] = 0.
+        ax[:self.c.NUM_SIDE * 2 + self.c.NUM_FLOOR] = 0.
+        ay[:self.c.NUM_SIDE * 2 + self.c.NUM_FLOOR] = 0.
 
-        print "ax"
-        print ax
+        #print "ax"
+        #print ax
 
-        print "ay"
-        print ay
+        #print "ay"
+        #print ay
 
         return ax, ay
 

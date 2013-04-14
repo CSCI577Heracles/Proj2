@@ -65,17 +65,17 @@ while count < NUM_TIMESTEPS:
 
     i.integrate()
 
-    print "vx:"
-    print c.vx
+    #print "vx:"
+    #print c.vx
 
-    print "vy:"
-    print c.vy
+    #print "vy:"
+    #print c.vy
 
     # pressure_listint "--------------------------------------"
     print "Timestep: " + str(count*DELTA_T)
-    print "aX:"
+    #print "aX:"
     #print c.ax
-    print "aY:"
+    #print "aY:"
     #print c.ay
     #pe_list.append(f.pe())
     #ke_list.append(f.ke())

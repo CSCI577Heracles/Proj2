@@ -182,7 +182,7 @@ class ContainerInitializer(object):
             c.Ly = 2.*(hf - hh) + nt*d  # height based on the angle theta (which specifies h's)
             hc = hf - hh                # height of the center of the hourglass
 
-            NUM_PARTICLES = 5
+            NUM_PARTICLES = 8
             yTop = np.arange(c.Ly - nt*d + r, c.Ly, r)
             
             xLDiag = np.arange(0, (wf - wh)/2., (d)*np.sin(theta))
@@ -203,22 +203,35 @@ class ContainerInitializer(object):
                 c.add_particle(xLDiag[i], yDiag[-i - 1], 0, 0, 0, 0)
                 c.add_particle(xRDiag[i], yDiag[i], 0, 0, 0, 0)
 
+            NUM_FLOOR = c.Lx / d
+            floor_x = np.linspace(0., c.Lx, NUM_FLOOR)
+            for floor in floor_x:
+                c.add_particle(floor, d, 0., 0., 0., 0.)
+
             part_x1 = np.linspace(10., 18., NUM_PARTICLES)
             part_x2 = np.linspace(10., 18., NUM_PARTICLES)
             part_x3 = np.linspace(10., 18., NUM_PARTICLES)
-            #part_x4 = np.linspace(10., 20., NUM_PARTICLES)
+            part_x4 = np.linspace(10., 18., NUM_PARTICLES)
 
-            part_y = np.ones((NUM_PARTICLES)) * 30
+            part_y = np.ones((NUM_PARTICLES)) * c.Ly
 
-            print part_y
+            #print part_y
+
+            ROW_STEP = 2.0
             for j in range(NUM_PARTICLES):
                 print j
                 c.add_particle(part_x1[j], part_y[j], 0., 0., 0., 0.)
-                c.add_particle(part_x2[j], part_y[j]-5., 0., 0., 0., 0.)
-                c.add_particle(part_x3[j], part_y[j]-10, 0., 0., 0., 0.)
-                #c.add_particle(part_x4[j], part_y[j]-15, 0., 0., 0., 0.)
+                c.add_particle(part_x2[j], part_y[j]-ROW_STEP, 0., 0., 0., 0.)
+                c.add_particle(part_x3[j], part_y[j]-ROW_STEP*2, 0., 0., 0., 0.)
+                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*3, 0., 0., 0., 0.)
+                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*4, 0., 0., 0., 0.)
+                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*5, 0., 0., 0., 0.)
+                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*6, 0., 0., 0., 0.)
+                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*7, 0., 0., 0., 0.)
+                #c.add_particle(part_x4[j], part_y[j]-ROW_STEP*8, 0., 0., 0., 0.)
 
             c.NUM_SIDE = N
+            c.NUM_FLOOR = NUM_FLOOR
 
         self.c = c
 
