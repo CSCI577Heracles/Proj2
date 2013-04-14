@@ -22,6 +22,7 @@ class Force(object):
 
     def damp_force(self, dvx, dvy, dx, dy, r_mag):
         gamma = self.GAMMA
+        print "gamma: " + str(gamma)
         #return -gamma * (np.dot(v, r)) * (r / r ** 2)
         return gamma * (dvx * dx + dvy * dy) / r_mag
 

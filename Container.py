@@ -147,3 +147,15 @@ class Container(object):
             if particle < hole_y:
                 count += 1
         return count
+
+    def get_bin_forces(self):
+        NUM_BINS = 4
+
+        force_x = self.ax[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
+        #force_x = force_x[self.y < self.Ly]
+        force_y = self.ay[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
+        #force_y = force_y[self.y < self.Ly]
+        num = self.y[(self.y > self.HOLE_Y) & (self.y < self.Ly)].size
+        #num = num[self.y < self.Ly].size
+
+        return (num, np.sum(force_x), np.sum(force_y))

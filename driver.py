@@ -6,13 +6,13 @@ import ContainerInitializer
 import numpy as np
 import matplotlib.pyplot as plt
 
-NUM_TIMESTEPS = 20000
+NUM_TIMESTEPS = 2000
 FRAME_RATE = 200
 DELTA_T = 0.01
 SQUEEZE = False
 SQUEEZE_FACTOR = 0.997
-GAMMA = 50
-GRAVITY = 4
+GAMMA = 50.
+GRAVITY = 4.
 NL = False                   # set True for Neighborlist, False for regular
 
 if NL:
@@ -25,6 +25,7 @@ NL_DIST = 2. ** (1./6.)
 
 
 part_count_below = []
+forces_bin = []
 
 state_list = []
 pe_list = []
@@ -68,6 +69,8 @@ while count < NUM_TIMESTEPS:
 
     i.integrate()
     part_count_below.append((count, c.count_p_below(c.HOLE_Y)))
+    forces_bin.append(c.get_bin_forces())
+
 
     #print "vx:"
     #print c.vx
