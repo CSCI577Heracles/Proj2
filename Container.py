@@ -121,7 +121,7 @@ class Container(object):
         dy = ytemp - ytemp.T
         dy[dy > self.Ly / 2.] -= self.Ly
         dy[dy < -self.Ly / 2.] += self.Ly
-        dy[dy > self.DIST_CUTOFF] = 0.
+        #dy[dy > self.DIST_CUTOFF] = 0.
         return dy
 
     def dz(self):

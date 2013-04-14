@@ -8,7 +8,7 @@ DIST_CUTOFF = 2 ** (1/6.)
 
 class ContainerInitializer(object):
     def __init__(self, init_string):
-        c = Container.Container(DIST_CUTOFF=DIST_CUTOFF)
+        c = Container.Container(DIST_CUTOFF)
         Lx = 10.
         Ly = 10.
         Lz = 0.
@@ -38,6 +38,7 @@ class ContainerInitializer(object):
             dist = lx / 5.
             vel = dist / 5.
             #c.L = Vector_3D(10., 10., 0.)
+            c.NUM_SIDE = 0
             c.Lx = 10.
             c.Ly = 10.
             c.Lz = 0.
@@ -138,7 +139,7 @@ class ContainerInitializer(object):
             c.Lx = 100
             c.Ly = 100
 
-            NUM_SIDE = 5
+            NUM_SIDE = 30
             NUM_PARTICLES = 3
 
             left_x = np.linspace(5., 45., NUM_SIDE)
@@ -175,18 +176,18 @@ class ContainerInitializer(object):
             nt = 10                     # number of particles defining the height of the hopper
             theta = np.pi/4.            # angle between vertical and hourglass wall
             wf = c.Lx                   # width at the top of the funnel
-            wh = 5.*d                   # width of the hole at the bottom of the funnel
+            wh = 3.*d                   # width of the hole at the bottom of the funnel
             hf = wf*np.tan(theta)/2.    # height of the triangle defined by wf and theta
             hh = wh*np.tan(theta)/2.    # height of the triangle defined by wh and theta
             c.Ly = 2.*(hf - hh) + nt*d  # height based on the angle theta (which specifies h's)
             hc = hf - hh                # height of the center of the hourglass
 
-            NUM_PARTICLES = 3
+            NUM_PARTICLES = 5
             yTop = np.arange(c.Ly - nt*d + r, c.Ly, r)
             
-            xLDiag = np.arange(0, (wf - wh)/2., (d+0.5)*np.sin(theta))
-            xRDiag = np.arange((wf + wh)/2., c.Lx, (d+0.5)*np.sin(theta))
-            yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, (d+0.5)*np.cos(theta))
+            xLDiag = np.arange(0, (wf - wh)/2., (d)*np.sin(theta))
+            xRDiag = np.arange((wf + wh)/2., c.Lx, (d)*np.sin(theta))
+            yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, (d)*np.cos(theta))
             print np.size(xLDiag)
             print np.size(xRDiag)
             print np.size(yDiag)
@@ -207,7 +208,7 @@ class ContainerInitializer(object):
             part_x3 = np.linspace(10., 18., NUM_PARTICLES)
             #part_x4 = np.linspace(10., 20., NUM_PARTICLES)
 
-            part_y = np.ones((NUM_PARTICLES)) * 24
+            part_y = np.ones((NUM_PARTICLES)) * 30
 
             print part_y
             for j in range(NUM_PARTICLES):

@@ -13,18 +13,18 @@ class Force(object):
     def lj_force(self, mag, hat):
         eps = 1.0
         sig = 1.0
-        a = ((24 * eps) / mag * (2 * (sig / mag) ** 12 - (sig / mag) ** 6)) * hat
+        a = (24 * eps) / mag * (2 * (sig / mag) ** 12) * hat
         a = np.nan_to_num(a)
         a = -a
         a[self.c.dr() > DIST_CUTOFF] = 0.
         return np.sum(a, axis=1)
 
-    def damp_force(self, dvx, dvy, dx, dy, r_mag, gamma=0.1):
+    def damp_force(self, dvx, dvy, dx, dy, r_mag, gamma=5.):
         #return -gamma * (np.dot(v, r)) * (r / r ** 2)
-        return -gamma * (dvx * dx + dvy * dy) / r_mag
+        return gamma * (dvx * dx + dvy * dy) / r_mag
 
     def gravity(self):
-        return np.ones(np.size(self.c.x)) * -2.0 * 0.01
+        return np.ones(np.size(self.c.x)) * -3.0 * 0.01
 
     def a(self):
         dx = self.c.dx()
@@ -35,11 +35,11 @@ class Force(object):
         dvx = self.c.dv_x()
         dvy = self.c.dv_y()
 
-        print "dvx"
-        print dvx[dvx > 0.]
+        #print "dvx"
+        #print dvx[dvx > 0.]
 
-        print "dvy"
-        print dvy[dvy > 0.]
+        #print "dvy"
+        #print dvy[dvy > 0.]
 
         r_mag = np.sqrt(dx ** 2 + dy ** 2)
 

@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 NUM_TIMESTEPS = 10000
-FRAME_RATE = 100
+FRAME_RATE = 10
 DELTA_T = 0.01
 SQUEEZE = False
 SQUEEZE_FACTOR = 0.997
@@ -64,6 +64,13 @@ while count < NUM_TIMESTEPS:
     #print "--------- BEGIN TIMESTEP " + str(count) + " --------------"
 
     i.integrate()
+
+    print "vx:"
+    print c.vx
+
+    print "vy:"
+    print c.vy
+
     # pressure_listint "--------------------------------------"
     print "Timestep: " + str(count*DELTA_T)
     print "aX:"
