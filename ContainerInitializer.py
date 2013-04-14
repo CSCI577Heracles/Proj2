@@ -138,8 +138,8 @@ class ContainerInitializer(object):
             c.Lx = 100
             c.Ly = 100
 
-            NUM_SIDE = 30
-            NUM_PARTICLES = 8
+            NUM_SIDE = 5
+            NUM_PARTICLES = 3
 
             left_x = np.linspace(5., 45., NUM_SIDE)
             left_y = np.linspace(95., 50., NUM_SIDE)
@@ -207,7 +207,7 @@ class ContainerInitializer(object):
             part_x3 = np.linspace(10., 18., NUM_PARTICLES)
             #part_x4 = np.linspace(10., 20., NUM_PARTICLES)
 
-            part_y = np.ones((NUM_PARTICLES)) * 25
+            part_y = np.ones((NUM_PARTICLES)) * 24
 
             print part_y
             for j in range(NUM_PARTICLES):
