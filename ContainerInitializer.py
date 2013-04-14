@@ -172,27 +172,24 @@ class ContainerInitializer(object):
         elif init_string == 'hourglass':
             d = 2.**(1/6.)              # diameter of particles
             r = d/2.                    # radius of particles
-            c.Lx = 25.*d
-            nt = 10                     # number of particles defining the height of the hopper
-            theta = np.pi/4.            # angle between vertical and hourglass wall
-            wf = c.Lx                   # width at the top of the funnel
+            c.Lx = 15.*d + r
+            nt = 10                     # number of particles for spacing
+            theta = np.pi/3.            # angle between vertical and hourglass wall
+            wf = c.Lx - r               # width at the top of the funnel
             wh = 3.*d                   # width of the hole at the bottom of the funnel
             hf = wf*np.tan(theta)/2.    # height of the triangle defined by wf and theta
             hh = wh*np.tan(theta)/2.    # height of the triangle defined by wh and theta
             c.Ly = 2.*(hf - hh) + nt*d  # height based on the angle theta (which specifies h's)
-            hc = hf - hh                # height of the center of the hourglass
+            hc = hf - hh + nt*d/2.      # height of the center of the hourglass
 
-            NUM_PARTICLES = 8
+            NUM_PARTICLES = int(3. * np.floor(c.Lx / d) / 4.)
             yTop = np.arange(c.Ly - nt*d + r, c.Ly, r)
             
-            xLDiag = np.arange(0, (wf - wh)/2., (d)*np.sin(theta))
-            xRDiag = np.arange((wf + wh)/2., c.Lx, (d)*np.sin(theta))
-            yDiag = np.arange((c.Ly - nt*d)/2., c.Ly - nt*d, (d)*np.cos(theta))
-            print np.size(xLDiag)
-            print np.size(xRDiag)
-            print np.size(yDiag)
+            xLDiag = np.arange(0., (wf - wh)/2., r*np.cos(theta))
+            xRDiag = np.arange((wf + wh)/2. + r, c.Lx, r*np.cos(theta))
+            yDiag = np.arange(hc, c.Ly - nt*d/2., r*np.sin(theta))
 
-            N = np.size(yDiag)
+            N = min(np.size(yDiag), np.size(xLDiag), np.size(xRDiag))
 
             #for i in range(np.size(yTop)):
             #    c.add_particle(r, yTop[i], 0, 0, 0, 0)
@@ -208,26 +205,34 @@ class ContainerInitializer(object):
             for floor in floor_x:
                 c.add_particle(floor, d, 0., 0., 0., 0.)
 
-            part_x1 = np.linspace(10., 18., NUM_PARTICLES)
-            part_x2 = np.linspace(10., 18., NUM_PARTICLES)
-            part_x3 = np.linspace(10., 18., NUM_PARTICLES)
-            part_x4 = np.linspace(10., 18., NUM_PARTICLES)
+            part_x = np.linspace((wf - NUM_PARTICLES*d)/2, (wf + NUM_PARTICLES*d)/2, NUM_PARTICLES)
+            part_y = np.linspace(hc, hc + NUM_PARTICLES*d, NUM_PARTICLES);
 
-            part_y = np.ones((NUM_PARTICLES)) * c.Ly
-
-            #print part_y
-
+            # slope of lines
+            mL = (yDiag[0] - yDiag[-1])/(xLDiag[-1] - xLDiag[0])
+            mR = -mL
+            
+            # intercepts of lines, with vertical padding based on the angle
+            bL = -mL * xLDiag[0] + yDiag[-1] + 2*d*np.sin(theta)
+            bR = -mR * xRDiag[0] + yDiag[0] + 2*d*np.sin(theta)
+            
+            print 'Left side: y = ' + str(mL) + 'x + ' + str(bL)
+            print 'Right side: y = ' + str(mR) + 'x + ' + str(bR)
+            
+            
             ROW_STEP = 2.0
-            for j in range(NUM_PARTICLES):
-                print j
-                c.add_particle(part_x1[j], part_y[j], 0., 0., 0., 0.)
-                c.add_particle(part_x2[j], part_y[j]-ROW_STEP, 0., 0., 0., 0.)
-                c.add_particle(part_x3[j], part_y[j]-ROW_STEP*2, 0., 0., 0., 0.)
-                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*3, 0., 0., 0., 0.)
-                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*4, 0., 0., 0., 0.)
-                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*5, 0., 0., 0., 0.)
-                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*6, 0., 0., 0., 0.)
-                c.add_particle(part_x4[j], part_y[j]-ROW_STEP*7, 0., 0., 0., 0.)
+            for i in range(NUM_PARTICLES):
+            	for j in range(NUM_PARTICLES):
+            	    # want to make sure we're above both left and right borders
+            	    if mL * part_x[i] + bL < part_y[j] and mR * part_x[i] + bR < part_y[j]:
+                	    c.add_particle(part_x[i], part_y[j], 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP, 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP*2, 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP*3, 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP*4, 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP*5, 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP*6, 0., 0., 0., 0.)
+                #c.add_particle(part_x1[j], part_y[j]-ROW_STEP*7, 0., 0., 0., 0.)
                 #c.add_particle(part_x4[j], part_y[j]-ROW_STEP*8, 0., 0., 0., 0.)
 
             c.NUM_SIDE = N

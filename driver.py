@@ -97,7 +97,10 @@ while count < NUM_TIMESTEPS:
         for particle in range(c.x.size):
             part_x = 0.
             part_y = 0.
-            circle((c.x[particle], c.y[particle]), radius = 0.5*2**(1/6.), ax=ax, facecolor='green')
+            if particle < 2*c.NUM_SIDE + c.NUM_FLOOR:
+            	circle((c.x[particle], c.y[particle]), radius = 0.5*2**(1/6.), ax=ax, facecolor='red')
+            else:
+            	circle((c.x[particle], c.y[particle]), radius = 0.5*2**(1/6.), ax=ax, facecolor='green')
         plt.draw()
         print "Timeunit: " + str(count * DELTA_T)
             #particles[particle] = {"x": c.x[particle], "y": c.y[particle]}

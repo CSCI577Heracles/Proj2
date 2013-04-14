@@ -70,9 +70,9 @@ class Force(object):
 
         damp_force[self.c.dr() > DIST_CUTOFF] = 0.
 
-        print "damp force > 0"
-        print damp_force[damp_force > 0]
-        print "damp_force dimensions: " + str(damp_force.shape)
+        #print "damp force > 0"
+        #print damp_force[damp_force > 0]
+        #print "damp_force dimensions: " + str(damp_force.shape)
         ax = self.lj_force(r_mag, x_hat)
         ax += np.sum(np.nan_to_num(damp_force * x_hat), axis=1)
 
