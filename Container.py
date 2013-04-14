@@ -137,8 +137,13 @@ class Container(object):
         #print np.sqrt(self.dx ** 2 + self.dy ** 2 + self.dz **2)
         return np.sqrt(self.dx() ** 2 + self.dy() ** 2)
 
-
-
     def dr2(self):
         r_mag = self.dx() ** 2 + self.dy() ** 2 + self.dz() ** 2
         return np.nan_to_num(r_mag)
+
+    def count_p_below(self, hole_y):
+        count = 0
+        for particle in self.y[self.NUM_SIDE * 2 + self.NUM_FLOOR:]:
+            if particle < hole_y:
+                count += 1
+        return count
