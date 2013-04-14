@@ -6,7 +6,7 @@ import ContainerInitializer
 import numpy as np
 import matplotlib.pyplot as plt
 
-NUM_TIMESTEPS = 2000
+NUM_TIMESTEPS = 20000
 FRAME_RATE = 200
 DELTA_T = 0.01
 SQUEEZE = False
@@ -116,7 +116,12 @@ while count < NUM_TIMESTEPS:
     count += 1
 
 parts = np.array(part_count_below)
-np.savetxt(str(GAMMA) + '_' + str(GRAVITY) + '.out', parts)
+#np.savetxt('flow_' + str(GAMMA) + '_' + str(GRAVITY) + '.out', parts)   # TODO: specify theta & width of hole
+np.save('flow_' + str(GAMMA) + '_' + str(GRAVITY), parts)
+
+forces = np.array(forces_bin)
+#np.savetxt('forces_bin_' + str(GAMMA) + '_' + str(GRAVITY) + '.out', forces)
+np.save('forces_bin_' + str(GAMMA) + '_' + str(GRAVITY), forces)
 
 #time = np.linspace(0, NUM_TIMESTEPS*DELTA_T, NUM_TIMESTEPS)
 

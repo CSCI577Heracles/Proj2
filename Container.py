@@ -150,12 +150,28 @@ class Container(object):
 
     def get_bin_forces(self):
         NUM_BINS = 4
+        row = []
+        hourglass_height = self.Ly - self.HOLE_Y
+        step = hourglass_height / NUM_BINS
 
-        force_x = self.ax[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
-        #force_x = force_x[self.y < self.Ly]
-        force_y = self.ay[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
-        #force_y = force_y[self.y < self.Ly]
-        num = self.y[(self.y > self.HOLE_Y) & (self.y < self.Ly)].size
-        #num = num[self.y < self.Ly].size
 
-        return (num, np.sum(force_x), np.sum(force_y))
+        top = self.Ly
+        bottom = top - step
+
+        for chunk in range(NUM_BINS):
+            force_x = self.ax[(self.y > bottom) & (self.y < top)]
+            force_y = self.ay[(self.y > bottom) & (self.y < top)]
+            num = self.y[(self.y > bottom) & (self.y < top)].size
+            row.append((num, np.sum(force_x), np.sum(force_y)))
+            top -= step
+            bottom -= step
+
+        #force_x = self.ax[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
+        ##force_x = force_x[self.y < self.Ly]
+        #force_y = self.ay[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
+        ##force_y = force_y[self.y < self.Ly]
+        #num = self.y[(self.y > self.HOLE_Y) & (self.y < self.Ly)].size
+        ##num = num[self.y < self.Ly].size
+
+        #return (num, np.sum(force_x), np.sum(force_y))
+        return row
