@@ -137,8 +137,41 @@ class Container(object):
         #print np.sqrt(self.dx ** 2 + self.dy ** 2 + self.dz **2)
         return np.sqrt(self.dx() ** 2 + self.dy() ** 2)
 
-
-
     def dr2(self):
         r_mag = self.dx() ** 2 + self.dy() ** 2 + self.dz() ** 2
         return np.nan_to_num(r_mag)
+
+    def count_p_below(self, hole_y):
+        count = 0
+        for particle in self.y[self.NUM_SIDE * 2 + self.NUM_FLOOR:]:
+            if particle < hole_y:
+                count += 1
+        return count
+
+    def get_bin_forces(self):
+        NUM_BINS = 4
+        row = []
+        hourglass_height = self.Ly - self.HOLE_Y
+        step = hourglass_height / NUM_BINS
+
+
+        top = self.Ly
+        bottom = top - step
+
+        for chunk in range(NUM_BINS):
+            force_x = self.ax[(self.y > bottom) & (self.y < top)]
+            force_y = self.ay[(self.y > bottom) & (self.y < top)]
+            num = self.y[(self.y > bottom) & (self.y < top)].size
+            row.append((num, np.sum(force_x), np.sum(force_y)))
+            top -= step
+            bottom -= step
+
+        #force_x = self.ax[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
+        ##force_x = force_x[self.y < self.Ly]
+        #force_y = self.ay[(self.y > self.HOLE_Y) & (self.y < self.Ly)]
+        ##force_y = force_y[self.y < self.Ly]
+        #num = self.y[(self.y > self.HOLE_Y) & (self.y < self.Ly)].size
+        ##num = num[self.y < self.Ly].size
+
+        #return (num, np.sum(force_x), np.sum(force_y))
+        return row

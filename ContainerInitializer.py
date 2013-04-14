@@ -237,6 +237,7 @@ class ContainerInitializer(object):
 
             c.NUM_SIDE = N
             c.NUM_FLOOR = NUM_FLOOR
+            c.HOLE_Y = hc
 
         self.c = c
 

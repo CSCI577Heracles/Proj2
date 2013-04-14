@@ -6,9 +6,10 @@ DIST_CUTOFF = 2 ** (1 / 6.)
 
 class Force(object):
 
-    def __init__(self, c, NL):
+    def __init__(self, c, GAMMA, GRAVITY):
         self.c = c
-        self.NL = NL
+        self.GAMMA = GAMMA
+        self.GRAVITY = GRAVITY
 
     def lj_force(self, mag, hat):
         eps = 1.0
@@ -19,12 +20,14 @@ class Force(object):
         a[self.c.dr() > DIST_CUTOFF] = 0.
         return np.sum(a, axis=1)
 
-    def damp_force(self, dvx, dvy, dx, dy, r_mag, gamma=50.):
+    def damp_force(self, dvx, dvy, dx, dy, r_mag):
+        gamma = self.GAMMA
+        print "gamma: " + str(gamma)
         #return -gamma * (np.dot(v, r)) * (r / r ** 2)
         return gamma * (dvx * dx + dvy * dy) / r_mag
 
     def gravity(self):
-        return np.ones(np.size(self.c.x)) * -4.0 * 0.01
+        return np.ones(np.size(self.c.x)) * -self.GRAVITY * 0.01
 
     def a(self):
         dx = self.c.dx()

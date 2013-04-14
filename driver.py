@@ -6,11 +6,13 @@ import ContainerInitializer
 import numpy as np
 import matplotlib.pyplot as plt
 
-NUM_TIMESTEPS = 10000
-FRAME_RATE = 10
+NUM_TIMESTEPS = 20000
+FRAME_RATE = 200
 DELTA_T = 0.01
 SQUEEZE = False
 SQUEEZE_FACTOR = 0.997
+GAMMA = 50.
+GRAVITY = 4.
 NL = False                   # set True for Neighborlist, False for regular
 
 if NL:
@@ -22,6 +24,8 @@ NL_UPDATE_RATE = 20
 NL_DIST = 2. ** (1./6.)
 
 
+part_count_below = []
+forces_bin = []
 
 state_list = []
 pe_list = []
@@ -45,7 +49,7 @@ c = ContainerInitializer.ContainerInitializer("hourglass").getContainer()
 #c.init_nl()
 #c.update_nl(NL_DIST)
 
-f = Force.Force(c, NL)
+f = Force.Force(c, GAMMA, GRAVITY)
 i = Integrator.Integrator(DELTA_T, f)
 
 state_list = []
@@ -64,6 +68,9 @@ while count < NUM_TIMESTEPS:
     #print "--------- BEGIN TIMESTEP " + str(count) + " --------------"
 
     i.integrate()
+    part_count_below.append((count, c.count_p_below(c.HOLE_Y)))
+    forces_bin.append(c.get_bin_forces())
+
 
     #print "vx:"
     #print c.vx
@@ -110,6 +117,14 @@ while count < NUM_TIMESTEPS:
         #plt.show()
 
     count += 1
+
+parts = np.array(part_count_below)
+#np.savetxt('flow_' + str(GAMMA) + '_' + str(GRAVITY) + '.out', parts)   # TODO: specify theta & width of hole
+np.save('flow_' + str(GAMMA) + '_' + str(GRAVITY), parts)
+
+forces = np.array(forces_bin)
+#np.savetxt('forces_bin_' + str(GAMMA) + '_' + str(GRAVITY) + '.out', forces)
+np.save('forces_bin_' + str(GAMMA) + '_' + str(GRAVITY), forces)
 
 #time = np.linspace(0, NUM_TIMESTEPS*DELTA_T, NUM_TIMESTEPS)
 
